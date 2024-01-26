@@ -6,6 +6,8 @@ services:
             -   "73:73"
         volumes:
             -   ./:/app
+        depends_on:
+            -   php-fpm
 
     php-fpm:
         build:

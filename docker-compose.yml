@@ -1,0 +1,8 @@
+services:
+    nginx:
+        build:
+            context: docker/nginx
+        ports:
+            -   "73:73"
+        volumes:
+            -   ./:/app

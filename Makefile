@@ -18,3 +18,6 @@ composer-install:
 
 test:
 	docker-compose run --rm php-cli composer test
+
+lint:
+	docker-compose run --rm php-cli composer php-cs-fixer fix --dry-run --diff

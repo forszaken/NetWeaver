@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Test\NetWeaver\Http\Message;
 
 use NetWeaver\Http\Message\ServerRequest;
+use NetWeaver\Http\Message\Uri;
+
 use PHPUnit\Framework\TestCase;
 
 class ServerRequestTest extends TestCase
@@ -13,7 +15,7 @@ class ServerRequestTest extends TestCase
     {
         $request = new ServerRequest(
             serverParams: $serverParams = ['HOST' => 'app.test'],
-            uri: $uri = '/home',
+            uri: $uri = new Uri('/home'),
             method: $method = 'GET',
             queryParams: $queryParams = ['name' => 'John'],
             headers: $headers = ['X-Header' => 'Value'],

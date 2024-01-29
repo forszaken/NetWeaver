@@ -11,6 +11,11 @@ function detectLang(string $default): string
     if (!empty($_GET['lang']) && is_string($_GET['lang'])) {
         return $_GET['lang'];
     }
+
+    if (!empty($_POST['lang']) && is_string($_POST['lang'])) {
+        return $_POST['lang'];
+    }
+
     return $default;
 }
 

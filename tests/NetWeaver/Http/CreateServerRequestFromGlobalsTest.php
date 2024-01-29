@@ -23,7 +23,9 @@ class CreateServerRequestFromGlobalsTest extends TestCase
         $query = ['param' => 'value'];
         $cookie = ['name' => 'John'];
         $body = ['age' => '42'];
-        $input = 'Body';
+
+        $input = fopen('php://memory', 'r+');
+        fwrite($input, 'Body');
 
         $request = createServerRequestFromGlobals($server, $query, $cookie, $body, $input);
 
@@ -38,7 +40,7 @@ class CreateServerRequestFromGlobalsTest extends TestCase
             'Accept-Language' => 'en',
         ], $request->getHeaders());
         self::assertEquals($cookie, $request->getCookieParams());
-        self::assertEquals($input, $request->getBody());
+        self::assertEquals('Body', (string)$request->getBody());
         self::assertEquals($body, $request->getParsedBody());
     }
 }

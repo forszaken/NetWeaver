@@ -14,6 +14,8 @@ class DetectLangTest extends TestCase
     {
         $_GET = [];
         $_POST = [];
+        $_COOKIE = [];
+        $_SERVER = [];
 
         $lang = detectLang('en');
 
@@ -39,4 +41,17 @@ class DetectLangTest extends TestCase
 
         self::assertEquals('fr', $lang);
     }
+
+    public function testCookie(): void
+    {
+        $_GET = [];
+        $_POST = [];
+        $_COOKIE = ['lang' => 'pt'];
+        $_SERVER = ['HTTP_ACCEPT_LANGUAGE' => 'ru-ru,ru;q=0.8,en;q=0.4'];
+
+        $lang = detectLang('en');
+
+        self::assertEquals('pt', $lang);
+    }
+
 }

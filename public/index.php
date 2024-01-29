@@ -16,6 +16,10 @@ function detectLang(string $default): string
         return $_POST['lang'];
     }
 
+    if (!empty($_COOKIE['lang'])) {
+        return $_COOKIE['lang'];
+    }
+
     return $default;
 }
 

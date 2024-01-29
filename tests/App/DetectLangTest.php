@@ -29,4 +29,14 @@ class DetectLangTest extends TestCase
 
         self::assertEquals('de', $lang);
     }
+
+    public function testBodyParam(): void
+    {
+        $_GET = [];
+        $_POST = ['lang' => 'fr'];
+
+        $lang = detectLang('en');
+
+        self::assertEquals('fr', $lang);
+    }
 }

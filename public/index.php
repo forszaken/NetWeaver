@@ -7,6 +7,7 @@ require __DIR__ . '/../vendor/autoload.php';
 $name = $_GET['name'] ?? 'Guest';
 
 if (!is_string($name)) {
+    http_response_code(400);
     exit;
 }
 

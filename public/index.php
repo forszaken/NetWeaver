@@ -4,4 +4,6 @@ declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-echo "Ping";
+$name = $_GET['name'] ?? 'Guest';
+
+echo '<h1>Hello, ' . htmlspecialchars($name) . '!</h1>';

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Test\NetWeaver\Http\Message;
 
 use NetWeaver\Http\Message\ServerRequest;
+use NetWeaver\Http\Message\Stream;
 use NetWeaver\Http\Message\Uri;
-
 use PHPUnit\Framework\TestCase;
 
 class ServerRequestTest extends TestCase
@@ -20,7 +20,7 @@ class ServerRequestTest extends TestCase
             queryParams: $queryParams = ['name' => 'John'],
             headers: $headers = ['X-Header' => 'Value'],
             cookieParams: $cookieParams = ['Cookie' => 'Val'],
-            body: $body = 'body',
+            body: $body = new Stream(fopen('php://memory', 'r')),
             parsedBody: $parsedBody = ['title' => 'Title']
         );
 

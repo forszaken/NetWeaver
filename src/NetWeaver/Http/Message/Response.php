@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NetWeaver\Http\Message;
 
-final class Response
+class Response
 {
     private int $statusCode;
     private string $body;

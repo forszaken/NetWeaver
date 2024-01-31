@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NetWeaver\Http\Message;
 
-final class ServerRequest
+class ServerRequest
 {
     private array $serverParams;
     private Uri $uri;

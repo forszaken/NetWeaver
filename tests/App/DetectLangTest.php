@@ -66,4 +66,22 @@ class DetectLangTest extends TestCase
 
         self::assertEquals('pt', $lang);
     }
+
+    public function testHeader(): void
+    {
+        $request = new ServerRequest(
+            serverParams: [],
+            uri: new Uri('/'),
+            method: 'GET',
+            queryParams: [],
+            headers: ['Accept-Language' => 'ru-ru,ru;q=0.8,en;q=0.4'],
+            cookieParams: [],
+            body: new Stream(fopen('php://memory', 'r')),
+            parsedBody: null
+        );
+
+        $lang = detectLang($request, 'en');
+
+        self::assertEquals('ru', $lang);
+    }
 }

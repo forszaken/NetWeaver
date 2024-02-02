@@ -27,9 +27,10 @@ class Response
         return $this->headers;
     }
 
-    public function setHeader(string $name, string $value): void
+    public function setHeader(string $name, string $value): self
     {
         $this->headers[$name] = $value;
+        return $this;
     }
 
     public function getBody(): Stream

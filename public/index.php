@@ -5,7 +5,7 @@ declare(strict_types=1);
 use NetWeaver\Http\Message\Response;
 use NetWeaver\Http\Message\ServerRequest;
 
-use function App\detectLang;
+use function DetectLang\detectLang;
 use function NetWeaver\Http\createServerRequestFromGlobals;
 use function NetWeaver\Http\emitResponseToSapi;
 

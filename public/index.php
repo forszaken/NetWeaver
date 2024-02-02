@@ -7,6 +7,7 @@ use NetWeaver\Http\Message\ServerRequest;
 
 use function App\detectLang;
 use function NetWeaver\Http\createServerRequestFromGlobals;
+use function NetWeaver\Http\emitResponseToSapi;
 
 http_response_code(500);
 
@@ -45,14 +46,4 @@ $response = home($request);
 
 ### Sending
 
-http_response_code($response->getStatusCode());
-
-/**
- * @var string $name
- * @var string $value
- */
-foreach ($response->getHeaders() as $name => $value) {
-    header($name . ': ' . $value);
-}
-
-echo $response->getBody();
+emitResponseToSapi($response);

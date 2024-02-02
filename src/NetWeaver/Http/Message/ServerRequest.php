@@ -60,6 +60,16 @@ class ServerRequest
         return $this->headers;
     }
 
+    public function hasHeader(string $name): bool
+    {
+        return array_key_exists($name, $this->headers);
+    }
+
+    public function getHeaderLine(string $name): string
+    {
+        return implode(', ', $this->headers[$name] ?? []);
+    }
+
     public function getCookieParams(): array
     {
         return $this->cookieParams;

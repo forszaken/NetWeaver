@@ -28,11 +28,7 @@ class ResponseTest extends TestCase
 
     public function testHeader(): void
     {
-        $response = new Response(
-            200,
-            new Stream(fopen('php://memory', 'r+')),
-            []
-        );
+        $response = new Response();
 
         $response = $response
             ->withHeader('Header-1', 'value-1')

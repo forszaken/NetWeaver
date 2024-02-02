@@ -42,4 +42,24 @@ class ServerRequestTest extends TestCase
         self::assertEquals($body, $request->getBody());
         self::assertEquals($parsedBody, $request->getParsedBody());
     }
+
+    public function testModify(): void
+    {
+        $request = new ServerRequest(
+            serverParams: ['HOST' => 'app.test'],
+            uri: new Uri('/home'),
+            method: 'GET',
+            queryParams: ['name' => 'John'],
+            headers: ['X-Header' => ['Value']],
+            cookieParams: ['Cookie' => 'Val'],
+            body: new Stream(fopen('php://memory', 'r')),
+            parsedBody: ['title' => 'Title']
+        );
+
+        $request = $request->withParsedBody(
+            $parsedBody = ['body' => 'Value']
+        );
+
+        self::assertEquals($parsedBody, $request->getParsedBody());
+    }
 }

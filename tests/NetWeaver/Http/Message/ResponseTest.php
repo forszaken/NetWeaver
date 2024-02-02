@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Test\NetWeaver\Http\Message;
 
 use NetWeaver\Http\Message\Response;
+use NetWeaver\Http\Message\Stream;
 use PHPUnit\Framework\TestCase;
 
 class ResponseTest extends TestCase
@@ -13,7 +14,7 @@ class ResponseTest extends TestCase
     {
         $response = new Response(
             $status = 200,
-            $body = 'Body',
+            $body = new Stream(fopen('php://memory', 'r+')),
             $headers = [
                 'Header-1' => 'value-1',
                 'Header-2' => 'value-2',

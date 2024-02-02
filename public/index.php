@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\LangServerRequestAdapter;
 use DetectLang\LangRequest;
 use NetWeaver\Http\Message\Response;
 use NetWeaver\Http\Message\ServerRequest;
@@ -25,14 +26,7 @@ function home(ServerRequest $request): Response
         return new Response(400);
     }
 
-    $lang = detectLang(
-        new LangRequest(
-            queryParams: $request->getQueryParams(),
-            headers: $request->getHeaders(),
-            cookieParams: $request->getCookieParams()
-        ),
-        'en'
-    );
+    $lang = detectLang(new LangServerRequestAdapter($request), 'en');
 
     $response = (new Response())
         ->withHeader('Content-Type', 'text/plain; charset=utf-8');

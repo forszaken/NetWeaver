@@ -38,7 +38,7 @@ class DetectLangTest extends TestCase
             uri: new Uri('/'),
             method: 'GET',
             queryParams: ['lang' => 'de'],
-            headers: ['Accept-Language' => 'ru-ru,ru;q=0.8,en;q=0.4'],
+            headers: ['Accept-Language' => ['ru-ru', 'ru;q=0.8', 'en;q=0.4']],
             cookieParams: ['lang' => 'pt'],
             body: new Stream(fopen('php://memory', 'r')),
             parsedBody: null
@@ -56,7 +56,7 @@ class DetectLangTest extends TestCase
             uri: new Uri('/'),
             method: 'GET',
             queryParams: [],
-            headers: ['Accept-Language' => 'ru-ru,ru;q=0.8,en;q=0.4'],
+            headers: ['Accept-Language' => ['ru-ru', 'ru;q=0.8', 'en;q=0.4']],
             cookieParams: ['lang' => 'pt'],
             body: new Stream(fopen('php://memory', 'r')),
             parsedBody: null
@@ -74,7 +74,7 @@ class DetectLangTest extends TestCase
             uri: new Uri('/'),
             method: 'GET',
             queryParams: [],
-            headers: ['Accept-Language' => 'ru-ru,ru;q=0.8,en;q=0.4'],
+            headers: ['Accept-Language' => ['ru-ru', 'ru;q=0.8', 'en;q=0.4']],
             cookieParams: [],
             body: new Stream(fopen('php://memory', 'r')),
             parsedBody: null

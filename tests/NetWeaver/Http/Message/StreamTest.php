@@ -7,10 +7,7 @@ namespace Test\NetWeaver\Http\Message;
 use NetWeaver\Http\Message\Stream;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @internal
- */
-final class StreamTest extends TestCase
+class StreamTest extends TestCase
 {
     public function testEmpty(): void
     {

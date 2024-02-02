@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace NetWeaver\Http\Message;
 
-final class ServerRequest
+class ServerRequest
 {
     private array $serverParams;
     private Uri $uri;
@@ -60,6 +60,16 @@ final class ServerRequest
         return $this->headers;
     }
 
+    public function hasHeader(string $name): bool
+    {
+        return array_key_exists($name, $this->headers);
+    }
+
+    public function getHeaderLine(string $name): string
+    {
+        return implode(', ', $this->headers[$name] ?? []);
+    }
+
     public function getCookieParams(): array
     {
         return $this->cookieParams;
@@ -73,5 +83,12 @@ final class ServerRequest
     public function getParsedBody(): ?array
     {
         return $this->parsedBody;
+    }
+
+    public function withParsedBody(?array $parsedBody): self
+    {
+        $clone = clone $this;
+        $clone->parsedBody = $parsedBody;
+        return $clone;
     }
 }

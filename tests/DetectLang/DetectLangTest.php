@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Test\App;
+namespace Test\DetectLang;
 
 use NetWeaver\Http\Message\ServerRequest;
 use NetWeaver\Http\Message\Stream;
 use NetWeaver\Http\Message\Uri;
 use PHPUnit\Framework\TestCase;
 
-use function App\detectLang;
+use function DetectLang\detectLang;
 
-class DetectLangTest extends TestCase
+/**
+ * @internal
+ */
+final class DetectLangTest extends TestCase
 {
     public function testDefault(): void
     {

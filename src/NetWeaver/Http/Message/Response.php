@@ -8,6 +8,7 @@ class Response
 {
     private int $statusCode;
     private Stream $body;
+
     private array $headers;
 
     public function __construct(int $statusCode = 200, ?Stream $body = null, array $headers = [])
@@ -27,10 +28,22 @@ class Response
         return $this->headers;
     }
 
+    public function getHeader(string $name): array
+    {
+        return $this->headers[$name] ?? [];
+    }
+
     public function withHeader(string $name, string $value): self
     {
         $clone = clone $this;
-        $clone->headers[$name] = $value;
+        $clone->headers[$name] = [$value];
+        return $clone;
+    }
+
+    public function withAddedHeader(string $name, string $value): self
+    {
+        $clone = clone $this;
+        $clone->headers[$name][] = $value;
         return $clone;
     }
 

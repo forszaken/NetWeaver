@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace NetWeaver\Http\Message;
 
-class Stream
+use General\Http\Message\StreamInterface;
+
+class Stream implements StreamInterface
 {
     /**
      * @var resource

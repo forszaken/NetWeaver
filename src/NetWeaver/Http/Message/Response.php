@@ -4,14 +4,22 @@ declare(strict_types=1);
 
 namespace NetWeaver\Http\Message;
 
-class Response
+use General\Http\Message\ResponseInterface;
+use General\Http\Message\StreamInterface;
+
+final class Response implements ResponseInterface
 {
     private int $statusCode;
-    private Stream $body;
-
+    private StreamInterface $body;
+    /**
+     * @var array<string, string[]>
+     */
     private array $headers;
 
-    public function __construct(int $statusCode = 200, ?Stream $body = null, array $headers = [])
+    /**
+     * @param array<string, string[]> $headers
+     */
+    public function __construct(int $statusCode = 200, ?StreamInterface $body = null, array $headers = [])
     {
         $this->statusCode = $statusCode;
         $this->body = $body ?? new Stream(fopen('php://memory', 'r+'));
@@ -23,6 +31,16 @@ class Response
         return $this->statusCode;
     }
 
+    public function withStatusCode(int $code): self
+    {
+        $new = clone $this;
+        $new->statusCode = $code;
+        return $new;
+    }
+
+    /**
+     * @return array<string, string[]>
+     */
     public function getHeaders(): array
     {
         return $this->headers;
@@ -47,8 +65,15 @@ class Response
         return $clone;
     }
 
-    public function getBody(): Stream
+    public function getBody(): StreamInterface
     {
         return $this->body;
+    }
+
+    public function withBody(StreamInterface $body): self
+    {
+        $new = clone $this;
+        $new->body = $body;
+        return $new;
     }
 }

@@ -4,25 +4,35 @@ declare(strict_types=1);
 
 namespace NetWeaver\Http\Message;
 
-class ServerRequest
+use General\Http\Message\ServerRequestInterface;
+use General\Http\Message\StreamInterface;
+use General\Http\Message\UriInterface;
+
+class ServerRequest implements ServerRequestInterface
 {
     private array $serverParams;
-    private Uri $uri;
+    private UriInterface $uri;
     private string $method;
     private array $queryParams;
+    /**
+     * @var array<string, string[]>
+     */
     private array $headers;
     private array $cookieParams;
-    private Stream $body;
+    private StreamInterface $body;
     private ?array $parsedBody;
 
+    /**
+     * @param array<string, string[]> $headers
+     */
     public function __construct(
         array $serverParams,
-        Uri $uri,
+        UriInterface $uri,
         string $method,
         array $queryParams,
         array $headers,
         array $cookieParams,
-        Stream $body,
+        StreamInterface $body,
         ?array $parsedBody
     ) {
         $this->serverParams = $serverParams;
@@ -40,7 +50,7 @@ class ServerRequest
         return $this->serverParams;
     }
 
-    public function getUri(): Uri
+    public function getUri(): UriInterface
     {
         return $this->uri;
     }
@@ -55,6 +65,9 @@ class ServerRequest
         return $this->queryParams;
     }
 
+    /**
+     * @return array<string, string[]>
+     */
     public function getHeaders(): array
     {
         return $this->headers;
@@ -75,7 +88,7 @@ class ServerRequest
         return $this->cookieParams;
     }
 
-    public function getBody(): Stream
+    public function getBody(): StreamInterface
     {
         return $this->body;
     }

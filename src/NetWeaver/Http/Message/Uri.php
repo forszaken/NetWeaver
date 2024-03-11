@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace NetWeaver\Http\Message;
 
-class Uri
+use General\Http\Message\UriInterface;
+
+class Uri implements UriInterface
 {
     private string $scheme;
     private string $host;

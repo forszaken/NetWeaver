@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace NetWeaver\Http;
 
-use NetWeaver\Http\Message\Response;
+use General\Http\Message\ResponseInterface;
 
-function emitResponseToSapi(Response $response): void
+function emitResponseToSapi(ResponseInterface $response): void
 {
     http_response_code($response->getStatusCode());
-
 
     foreach ($response->getHeaders() as $name => $values) {
         foreach ($values as $value) {

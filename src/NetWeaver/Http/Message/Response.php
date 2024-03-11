@@ -7,7 +7,7 @@ namespace NetWeaver\Http\Message;
 use General\Http\Message\ResponseInterface;
 use General\Http\Message\StreamInterface;
 
-final class Response implements ResponseInterface
+class Response implements ResponseInterface
 {
     private int $statusCode;
     private StreamInterface $body;

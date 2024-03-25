@@ -2,71 +2,53 @@
 
 declare(strict_types=1);
 
-use Laminas\Diactoros\Response;
-use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+namespace Framework\Http;
 
-use function App\detectLang;
-use function NetWeaver\Http\createServerRequestFromGlobals;
+use NetWeaver\Http\Message\DiactorosStreamFactory;
+use NetWeaver\Http\Message\DiactorosUriFactory;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\Stream;
+use Laminas\Diactoros\Uri;
 
-http_response_code(500);
+/**
+ * @param array<string, array|string>|null $query
+ * @param array<string, array|string>|null $body
+ * @param array<string, string>|null $server
+ * @param resource|null $input
+ */
+function createDiactorosServerRequestFromGlobals(
+    ?array $server = null,
+    ?array $query = null,
+    ?array $cookie = null,
+    ?array $body = null,
+    mixed $input = null
+): ServerRequest {
+    $server ??= $_SERVER;
 
-/** @psalm-suppress MissingFile */
-require __DIR__ . '/../vendor/autoload.php';
+    $headers = [
+        'Content-Type' => [$server['CONTENT_TYPE']],
+        'Content-Length' => [$server['CONTENT_LENGTH']],
+    ];
 
-### Page
-
-class Home
-{
-    private readonly Response $response;
-
-    public function __construct(Response $response)
-    {
-        $this->response = $response;
-    }
-
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
-    {
-        $name = $request->getQueryParams()['name'] ?? 'Guest';
-
-        if (!is_string($name)) {
-            return $this->response->withStatus(400);
+    foreach ($server as $serverName => $serverValue) {
+        if (str_starts_with($serverName, 'HTTP_')) {
+            $name = ucwords(strtolower(str_replace('_', '-', substr($serverName, 5))), '-');
+            /** @var string[] $values */
+            $values = preg_split('#\s*,\s*#', $serverValue);
+            $headers[$name] = $values;
         }
-
-        $lang = detectLang($request, 'en');
-
-        $response = $this->response
-            ->withHeader('Content-Type', 'text/plain; charset=utf-8');
-
-        $response->getBody()->write('Hello, ' . $name . '! Your lang is ' . $lang);
-
-        return $response;
     }
+
+    return new ServerRequest(
+        serverParams: $server,
+        uri: (new DiactorosUriFactory())->createUri(
+            (!empty($server['HTTPS']) ? 'https' : 'http') . '://' . $server['HTTP_HOST'] . $server['REQUEST_URI']
+        ),
+        method: $server['REQUEST_METHOD'],
+        body: (new DiactorosStreamFactory())->createStreamFromResource($input ?: fopen('php://input', 'r')),
+        headers: $headers,
+        cookieParams: $cookie ?? $_COOKIE,
+        queryParams: $query ?? $_GET,
+        parsedBody: $body ?? ($_POST ?: null)
+    );
 }
-
-### Grabbing
-
-$request = createServerRequestFromGlobals();
-
-### Preprocessing
-
-if (str_starts_with($request->getHeaderLine('Content-Type'), 'application/x-www-form-urlencoded')) {
-    parse_str((string)$request->getBody(), $data);
-    $request = $request->withParsedBody($data);
-}
-
-### Running
-
-$home = new Home(new Response());
-
-$response = $home($request);
-
-### Postprocessing
-
-$response = $response->withHeader('X-Frame-Options', 'DENY');
-
-### Sending
-
-$emitter = new SapiStreamEmitter();
-$emitter->emit($response);

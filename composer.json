@@ -9,7 +9,7 @@
     },
     "autoload": {
         "files": [
-            "src/DetectLang/detectLang.php",
+            "src/App/detectLang.php",
             "src/NetWeaver/Http/createServerRequestFromGlobals.php"
         ],
         "psr-4": {

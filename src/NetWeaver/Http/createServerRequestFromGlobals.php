@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace NetWeaver\Http;
 
-use NetWeaver\Http\Message\ServerRequest;
-use NetWeaver\Http\Message\Stream;
-use NetWeaver\Http\Message\Uri;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\Stream;
+use Laminas\Diactoros\Uri;
 
 /**
  * @param array<string, array|string>|null $query
@@ -43,10 +43,10 @@ function createServerRequestFromGlobals(
             (!empty($server['HTTPS']) ? 'https' : 'http') . '://' . $server['HTTP_HOST'] . $server['REQUEST_URI']
         ),
         method: $server['REQUEST_METHOD'],
-        queryParams: $query ?? $_GET,
+        body: new Stream($input ?: fopen('php://input', 'r')),
         headers: $headers,
         cookieParams: $cookie ?? $_COOKIE,
-        body: new Stream($input ?: fopen('php://input', 'r')),
+        queryParams: $query ?? $_GET,
         parsedBody: $body ?? ($_POST ?: null)
     );
 }

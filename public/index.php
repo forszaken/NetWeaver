@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-use NetWeaver\Http\Message\Response;
-use General\Http\Message\ResponseInterface;
-use General\Http\Message\ServerRequestInterface;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\Response\TextResponse;
+use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 use function DetectLang\detectLang;
 use function NetWeaver\Http\createServerRequestFromGlobals;
-use function NetWeaver\Http\emitResponseToSapi;
 
 http_response_code(500);
 
@@ -22,17 +23,12 @@ function home(ServerRequestInterface $request): ResponseInterface
     $name = $request->getQueryParams()['name'] ?? 'Guest';
 
     if (!is_string($name)) {
-        return new Response(400);
+        return new EmptyResponse(400);
     }
 
     $lang = detectLang($request, 'en');
 
-    $response = (new Response())
-        ->withHeader('Content-Type', 'text/plain; charset=utf-8');
-
-    $response->getBody()->write('Hello, ' . $name . '! Your lang is ' . $lang);
-
-    return $response;
+    return new TextResponse('Hello, ' . $name . '! Your lang is ' . $lang);
 }
 
 ### Grabbing
@@ -56,4 +52,5 @@ $response = $response->withHeader('X-Frame-Options', 'DENY');
 
 ### Sending
 
-emitResponseToSapi($response);
+$emitter = new SapiStreamEmitter();
+$emitter->emit($response);

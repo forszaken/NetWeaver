@@ -14,9 +14,7 @@
         ],
         "psr-4": {
             "App\\": "src/App",
-            "DetectLang\\": "src/DetectLang/",
-            "NetWeaver\\": "src/NetWeaver/",
-            "General\\": "src/General/"
+            "NetWeaver\\": "src/NetWeaver/"
         }
     },
     "autoload-dev": {

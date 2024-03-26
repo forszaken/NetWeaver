@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use NetWeaver\Http\Message\DiactorosResponseFactory;
+use NetWeaver\Http\Message\DiactorosServerRequestFactory;
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 use function App\detectLang;
-use function NetWeaver\Http\createDiactorosServerRequestFromGlobals;
 
 http_response_code(500);
 
@@ -45,21 +45,27 @@ class Home
 }
 
 ### Grabbing
-$request = createDiactorosServerRequestFromGlobals();
+
+$request = DiactorosServerRequestFactory::fromGlobals();
 
 ### Preprocessing
+
 if (str_starts_with($request->getHeaderLine('Content-Type'), 'application/x-www-form-urlencoded')) {
     parse_str((string)$request->getBody(), $data);
     $request = $request->withParsedBody($data);
 }
 
 ### Running
+
 $home = new Home(new DiactorosResponseFactory());
+
 $response = $home($request);
 
 ### Postprocessing
+
 $response = $response->withHeader('X-Frame-Options', 'DENY');
 
 ### Sending
+
 $emitter = new SapiStreamEmitter();
 $emitter->emit($response);

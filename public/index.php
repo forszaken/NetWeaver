@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use Laminas\Diactoros\ResponseFactory;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\Response\TextResponse;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -17,32 +17,17 @@ http_response_code(500);
 require __DIR__ . '/../vendor/autoload.php';
 
 ### Page
-class Home
+function home(ServerRequestInterface $request): ResponseInterface
 {
-    private readonly ResponseFactoryInterface $factory;
+    $name = $request->getQueryParams()['name'] ?? 'Guest';
 
-    public function __construct(ResponseFactoryInterface $factory)
-    {
-        $this->factory = $factory;
+    if (!is_string($name)) {
+        return new EmptyResponse(400);
     }
 
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
-    {
-        $name = $request->getQueryParams()['name'] ?? 'Guest';
+    $lang = detectLang($request, 'en');
 
-        if (!is_string($name)) {
-            return $this->factory->createResponse(400);
-        }
-
-        $lang = detectLang($request, 'en');
-
-        $response = $this->factory->createResponse()
-            ->withHeader('Content-Type', 'text/plain; charset=utf-8');
-
-        $response->getBody()->write('Hello, ' . $name . '! Your lang is ' . $lang);
-
-        return $response;
-    }
+    return new TextResponse('Hello, ' . $name . '! Your lang is ' . $lang);
 }
 
 ### Grabbing
@@ -58,9 +43,7 @@ if (str_starts_with($request->getHeaderLine('Content-Type'), 'application/x-www-
 
 ### Running
 
-$home = new Home(new ResponseFactory());
-
-$response = $home($request);
+$response = home($request);
 
 ### Postprocessing
 

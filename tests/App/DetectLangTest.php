@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Test\App;
 
-use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\ServerRequestFactory;
 use PHPUnit\Framework\TestCase;
 
 use function App\detectLang;
@@ -13,7 +13,7 @@ class DetectLangTest extends TestCase
 {
     public function testDefault(): void
     {
-        $request = new ServerRequest();
+        $request = (new ServerRequestFactory())->createServerRequest('GET', '/');
 
         $lang = detectLang($request, 'en');
 
@@ -22,7 +22,7 @@ class DetectLangTest extends TestCase
 
     public function testQueryParam(): void
     {
-        $request = (new ServerRequest())
+        $request = (new ServerRequestFactory())->createServerRequest('GET', '/')
             ->withQueryParams(['lang' => 'de'])
             ->withCookieParams(['lang' => 'pt'])
             ->withHeader('Accept-Language', ['ru-ru', 'ru;q=0.8', 'en;q=0.4']);
@@ -34,7 +34,7 @@ class DetectLangTest extends TestCase
 
     public function testCookie(): void
     {
-        $request = (new ServerRequest())
+        $request = (new ServerRequestFactory())->createServerRequest('GET', '/')
             ->withCookieParams(['lang' => 'pt'])
             ->withHeader('Accept-Language', ['ru-ru', 'ru;q=0.8', 'en;q=0.4']);
 
@@ -45,7 +45,7 @@ class DetectLangTest extends TestCase
 
     public function testHeader(): void
     {
-        $request = (new ServerRequest())
+        $request = (new ServerRequestFactory())->createServerRequest('GET', '/')
             ->withHeader('Accept-Language', ['ru-ru', 'ru;q=0.8', 'en;q=0.4']);
 
         $lang = detectLang($request, 'en');

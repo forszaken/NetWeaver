@@ -6,9 +6,9 @@ namespace Test\NetWeaver\Http;
 
 use PHPUnit\Framework\TestCase;
 
-use function NetWeaver\Http\createServerRequestFromGlobals;
+use function NetWeaver\Http\createDiactorosServerRequestFromGlobals;
 
-class CreateServerRequestFromGlobalsTest extends TestCase
+class CreateDiactorosServerRequestFromGlobalsTest extends TestCase
 {
     public function testGlobals(): void
     {
@@ -27,7 +27,7 @@ class CreateServerRequestFromGlobalsTest extends TestCase
         $input = fopen('php://memory', 'r+');
         fwrite($input, 'Body');
 
-        $request = createServerRequestFromGlobals($server, $query, $cookie, $body, $input);
+        $request = createDiactorosServerRequestFromGlobals($server, $query, $cookie, $body, $input);
 
         self::assertEquals($server, $request->getServerParams());
         self::assertEquals('http://localhost/home?a=2', (string)$request->getUri());

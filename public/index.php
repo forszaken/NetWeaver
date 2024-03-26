@@ -17,20 +17,17 @@ http_response_code(500);
 require __DIR__ . '/../vendor/autoload.php';
 
 ### Page
-class Home
+function home(ServerRequestInterface $request): ResponseInterface
 {
-    public function __invoke(ServerRequestInterface $request): ResponseInterface
-    {
-        $name = $request->getQueryParams()['name'] ?? 'Guest';
+    $name = $request->getQueryParams()['name'] ?? 'Guest';
 
-        if (!is_string($name)) {
-            return new EmptyResponse(400);
-        }
-
-        $lang = detectLang($request, 'en');
-
-        return new TextResponse('Hello, ' . $name . '! Your lang is ' . $lang);
+    if (!is_string($name)) {
+        return new EmptyResponse(400);
     }
+
+    $lang = detectLang($request, 'en');
+
+    return new TextResponse('Hello, ' . $name . '! Your lang is ' . $lang);
 }
 
 ### Grabbing
@@ -46,9 +43,7 @@ if (str_starts_with($request->getHeaderLine('Content-Type'), 'application/x-www-
 
 ### Running
 
-$home = new Home();
-
-$response = $home($request);
+$response = home($request);
 
 ### Postprocessing
 

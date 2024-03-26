@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use NetWeaver\Http\Message\DiactorosResponseFactory;
-use NetWeaver\Http\Message\DiactorosServerRequestFactory;
-use General\Http\Message\ResponseFactoryInterface;
+use Laminas\Diactoros\ResponseFactory;
+use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -47,7 +47,7 @@ class Home
 
 ### Grabbing
 
-$request = DiactorosServerRequestFactory::fromGlobals();
+$request = ServerRequestFactory::fromGlobals();
 
 ### Preprocessing
 
@@ -58,7 +58,7 @@ if (str_starts_with($request->getHeaderLine('Content-Type'), 'application/x-www-
 
 ### Running
 
-$home = new Home(new DiactorosResponseFactory());
+$home = new Home(new ResponseFactory());
 
 $response = $home($request);
 

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace NetWeaver\Http\Message;
 
+use General\Http\Message\ServerRequestFactoryInterface;
 use Laminas\Diactoros\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface;
 
-class DiactorosServerRequestFactory
+class DiactorosServerRequestFactory implements ServerRequestFactoryInterface
 {
     /**
      * @param array<string, array|string>|null $query

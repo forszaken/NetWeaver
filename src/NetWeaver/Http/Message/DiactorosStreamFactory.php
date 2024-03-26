@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace NetWeaver\Http\Message;
 
-use General\Http\Message\StreamFactoryInterface;
 use Laminas\Diactoros\Stream;
+use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 
 class DiactorosStreamFactory implements StreamFactoryInterface
@@ -19,10 +19,12 @@ class DiactorosStreamFactory implements StreamFactoryInterface
         return new Stream($resource);
     }
 
-    /**
-     * @param resource $resource
-     */
-    public function createStreamFromResource(mixed $resource): StreamInterface
+    public function createStreamFromFile(string $filename, string $mode = 'r'): StreamInterface
+    {
+        return new Stream(fopen($filename, $mode));
+    }
+
+    public function createStreamFromResource($resource): StreamInterface
     {
         return new Stream($resource);
     }

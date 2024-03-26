@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use NetWeaver\Http\Message\DiactorosResponseFactory;
 use NetWeaver\Http\Message\DiactorosServerRequestFactory;
-use General\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
